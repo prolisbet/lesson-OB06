@@ -40,7 +40,7 @@ class Hero:
     def attack(self, other):
         other.health -= self.attack_power
         print(f'Герой {self.name} атакует героя {other.name}.')
-        print(f'Здоровье героя {other.name}: {other.health}.')
+        print(f'Здоровье героя {other.name}: {other.health}.\n')
 
     def is_alive(self):
         if self.health <= 0:
@@ -58,16 +58,35 @@ class Game:
         print('Игра началась!')
         choice = random.randint(0, 1)
         if choice == 0:
-            first = self.computer
-            second = self.player
-            print(f'Первым действует герой {self.computer.name}.')
-        else:
-            first = self.player
-            second = self.computer
-            print(f'Первым действует герой {self.player.name}.')
+            print(f'Первым действует герой {self.computer.name}.\n')
+        elif choice == 1:
+            print(f'Первым действует герой {self.player.name}.\n')
         while self.player.is_alive() and self.computer.is_alive():
-            first.attack(second)
-            second.attack(first)
+            if choice % 2 == 0:
+                comp_choice = random.randint(1, 3)
+                if comp_choice == 1:
+                    self.computer.attack(self.player)
+                elif comp_choice == 2:
+                    self.computer.attack_power += 5
+                    print(f'Герой {self.computer.name} увеличил силу удара.')
+                    print(f'Сила удара героя {self.computer.name}: {self.computer.attack_power}.\n')
+                elif comp_choice == 3:
+                    self.computer.health += 15
+                    print(f'Герой {self.computer.name} увеличил очки здоровья.')
+                    print(f'Здоровье героя {self.computer.name}: {self.computer.health}.\n')
+            if choice % 2 == 1:
+                pl_choice = int(input('Введите номер действия: 1 - атака, 2 - сила удара, 3 - здоровье.\n'))
+                if pl_choice == 1:
+                    self.player.attack(self.computer)
+                elif pl_choice == 2:
+                    self.player.attack_power += 5
+                    print(f'Герой {self.player.name} увеличил силу удара.')
+                    print(f'Сила удара героя {self.player.name}: {self.player.attack_power}.\n')
+                elif pl_choice == 3:
+                    self.player.health += 15
+                    print(f'Герой {self.player.name} увеличил очки здоровья.')
+                    print(f'Здоровье героя {self.player.name}: {self.player.health}.\n')
+            choice += 1
         print('Игра окончена.')
         if self.player.is_alive():
             print(f'Герой {self.player.name} победил!')
@@ -80,4 +99,3 @@ computer1 = Hero('computer')
 
 game = Game(player1, computer1)
 game.start()
-
